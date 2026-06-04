@@ -33,6 +33,8 @@ Remember, it's self-paced so feel free to take a break! ☕️
 - [Hands-on Practice](#️-hands-on-practice)
   - [Prerequisites](#prerequisites)
   - [Task 1: Dependency Graph](#task-1-dependency-graph)
+    - [Activity 1.1: Verify Dependency Graph is enabled](#activity-11--verify-that-dependency-graph-is-enabled)
+    - [Activity 1.2: Add a new dependency](#activity-12--add-a-new-dependency-and-view-your-dependency-graph)
   - [Task 2: Dependabot Alerts](#task-2-dependabot-alerts)
   - [Task 3: Dependabot Security Updates](#task-3-dependabot-security-updates)
   - [Task 4: Dependabot Version Updates](#task-4-dependabot-version-updates)
@@ -231,25 +233,55 @@ https://github.com/skills/secure-repository-supply-chain
 
 ### Task 1: Dependency Graph
 
-**Goal:** View and understand the repository's dependencies
+**Goal:** Review existing dependencies and add a new one to observe how the dependency graph updates in real time
 
-**Steps:**
+> 💡 The dependency graph is a summary of manifest and lock files stored in a repository. It shows all ecosystems and packages the project depends on, as well as repositories that depend on it.
 
-1. Navigate to your repository
-2. Click the **Insights** tab
-3. Select **Dependency graph** from the left menu
-4. Review the list of dependencies and their transitive dependencies
+#### Activity 1.1 — Verify that Dependency Graph is enabled
+
+> **Note:** Dependency graph is enabled by default for all new public repositories.
+
+1. Navigate to the **Settings** tab of your repository
+2. Click **Advanced Security** in the left sidebar
+3. Verify that **Dependency Graph** is set to **Enabled**
+
+#### Activity 1.2 — Add a new dependency and view your dependency graph
+
+1. Navigate to the **Code** tab and open the `code/src/AttendeeSite` folder
+2. Open the `package-lock.json` file and click the **Edit** (pencil) icon
+3. Locate the `dependencies` map and add the following entry as the **last item** — after the third-to-last closing bracket `}` and before the final two brackets:
+
+```json
+,
+"follow-redirects": {
+  "version": "1.14.1",
+  "resolved": "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.1.tgz",
+  "integrity": "sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg=="
+}
+```
+
+> 💡 You can also press the `.` key on any repository page to open the lightweight web editor for editing and committing changes.
+
+4. Commit the change directly to the `main` branch
+5. Navigate to the **Insights** tab
+6. Select **Dependency graph** from the left sidebar
+7. Open the **Dependencies** tab and search for `follow-redirects`
+8. Verify the new dependency appears in the graph
 
 **Expected result:**
 ```
-Repository → Insights → Dependency graph
-├── Dependencies (packages your project depends on)
-└── Dependents (packages that depend on your project)
+Repository → Insights → Dependency graph → Dependencies
+├── ... existing dependencies ...
+└── follow-redirects@1.14.1   ← newly added
 ```
 
+> ⏳ After committing, wait a moment for Mona (the GitHub Actions bot) to check your work and post the next step in the issue comments.
+
 **Checklist:**
-- [ ] Dependency graph is visible
-- [ ] Direct and transitive dependencies are shown
+- [ ] Dependency graph is enabled in Settings → Advanced Security
+- [ ] `follow-redirects` entry added to `package-lock.json`
+- [ ] New dependency is visible in the dependency graph
+- [ ] GitHub Actions grading workflow completed successfully
 
 ---
 
@@ -433,4 +465,3 @@ Secret scanning detects tokens, API keys, and passwords using known patterns. Fi
 ---
 
 *Module: Maintain a secure repository by using GitHub best practices | Microsoft Learn*
-
