@@ -7,11 +7,7 @@
 > **Platform:** GitHub / Microsoft Learn  
 > **Level:** Beginner → Intermediate
 >
-<img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
 
-[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/VitaliiShevchuk2023/skills-secure-repository-supply-chain/issues/1)
-
----
 
 ## 📋 Table of Contents
 
