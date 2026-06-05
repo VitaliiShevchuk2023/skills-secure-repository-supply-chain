@@ -550,6 +550,9 @@ Repository → Insights → Dependency graph → Dependencies
 └── follow-redirects@1.14.1   ← newly added
 ```
 
+![](https://github.com/VitaliiShevchuk2023/skills-secure-repository-supply-chain/blob/main/images/github2.png)
+
+
 > ⏳ After committing, wait a moment for Mona (the GitHub Actions bot) to check your work and post the next step in the issue comments.
 
 **Checklist:**
