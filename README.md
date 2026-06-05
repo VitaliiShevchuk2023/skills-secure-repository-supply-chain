@@ -28,7 +28,10 @@
   - [Task 1: Dependency Graph](#task-1-dependency-graph)
     - [Activity 1.1: Verify Dependency Graph is enabled](#activity-11--verify-that-dependency-graph-is-enabled)
     - [Activity 1.2: Add a new dependency](#activity-12--add-a-new-dependency-and-view-your-dependency-graph)
-  - [Task 2: Dependabot Alerts](#task-2-dependabot-alerts)
+  - [Task 2: Dependabot Alerts](#task-2-enable-and-view-dependabot-alerts)
+    - [Activity 2.1: View advisories in GitHub Advisory Database](#activity-21--view-security-advisories-in-the-github-advisory-database)
+    - [Activity 2.2: Enable Dependabot alerts](#activity-22--enable-dependabot-alerts)
+    - [Activity 2.3: Create a security update PR](#activity-23--create-a-pull-request-based-on-a-dependabot-alert)
   - [Task 3: Dependabot Security Updates](#task-3-dependabot-security-updates)
   - [Task 4: Dependabot Version Updates](#task-4-dependabot-version-updates)
 - [Knowledge Check](#-knowledge-check)
@@ -555,31 +558,83 @@ Repository → Insights → Dependency graph → Dependencies
 
 ---
 
-### Task 2: Dependabot Alerts
+### Task 2: Enable and View Dependabot Alerts
 
-**Goal:** View and understand Dependabot security alerts
+**Goal:** Understand what Dependabot alerts are, search the GitHub Advisory Database for a known vulnerability, enable alerts on your repository, and create a security update pull request.
 
-**Steps:**
+> 💡 **What are Dependabot alerts?**  
+> Dependabot alerts notify you that your code depends on a package that is insecure. They reference the [GitHub Advisory Database](https://github.com/advisories), which contains known security vulnerabilities and malware grouped into two categories: **GitHub reviewed advisories** and **unreviewed advisories**.  
+> If your code depends on a vulnerable package, you should upgrade to a secure version as soon as possible. If your code uses malware, replace the package with a secure alternative.
 
-1. Navigate to the **Security** tab of your repository
-2. Select **Dependabot alerts** from the left menu
-3. Review the list of vulnerabilities
-4. Click on an individual alert to view its details
+---
 
-**Alert structure:**
+#### Activity 2.1 — View security advisories in the GitHub Advisory Database
+
+1. Navigate to the [GitHub Advisory Database](https://github.com/advisories)
+2. Type or paste `follow-redirects` into the advisory search box
+3. Click on any of the advisories found to see more information
+4. Review the details: **packages affected**, **impact**, **patches**, **workarounds**, and **references**
+
+> 📌 You will notice a long list of advisories for `follow-redirects`. This is actually a good sign — it means the dependency is actively maintained and patches are being released. With Dependabot alerts enabled, you would be notified automatically whenever an update is needed.
+
+**Alert detail structure:**
 ```
-Vulnerability name
-├── Package: name and version
-├── Severity: Critical / High / Medium / Low
-├── CVE ID: CVE-XXXX-XXXXX
-├── Vulnerability description
-└── Recommended fix
+Advisory: [CVE-XXXX-XXXXX]
+├── Package:      follow-redirects (npm)
+├── Severity:     Critical / High / Medium / Low
+├── Impact:       Description of the vulnerability
+├── Patches:      Safe versions to upgrade to
+├── Workarounds:  Manual mitigations (if any)
+└── References:   External CVE links and discussions
+```
+
+---
+
+#### Activity 2.2 — Enable Dependabot alerts
+
+1. Navigate to the **Settings** tab of your repository
+2. In the left sidebar, click **Advanced Security**
+3. Toggle **Dependabot alerts** to **Enabled**
+4. Wait approximately **60 seconds** for Dependabot to scan your repository
+5. Navigate to the **Security** tab
+6. Under **Vulnerability alerts** in the sidebar, select **Dependabot**
+7. Review the list of Dependabot alerts for the default branch
+
+> ⏳ Dependabot will now flag any insecure dependencies it detects. These alerts show which packages need attention and suggest safe versions to upgrade to.
+
+---
+
+#### Activity 2.3 — Create a pull request based on a Dependabot alert
+
+1. In the list of Dependabot alerts, click **"Prototype Pollution in minimist"** to view details
+2. Click the **Create Dependabot security update** button to generate a pull request
+   > ⏳ This may take up to **2 minutes** to complete
+3. Once the pull request is open, the alert page updates to show a **Review security update** button
+4. Click **Review security update** to open the pull request
+5. Review the **Conversation** tab and the **Files changed** tab to understand the update
+6. Return to the **Conversation** tab and **merge the pull request**
+
+> ⏳ After merging, wait for Mona (the GitHub Actions bot) to check your work and post progress and the next lesson in the issue comments.
+
+**What happens after merging:**
+```
+Dependabot security update PR merged
+         ↓
+Vulnerable dependency version → replaced with patched version
+         ↓
+Dependabot alert → automatically closed
+         ↓
+Dependency graph → updated to reflect new version
 ```
 
 **Checklist:**
-- [ ] Dependabot alerts are enabled
-- [ ] At least one alert has been reviewed
-- [ ] Severity and recommended fix are understood
+- [ ] `follow-redirects` searched in the GitHub Advisory Database
+- [ ] At least one advisory reviewed (packages, impact, patches)
+- [ ] Dependabot alerts enabled in Settings → Advanced Security
+- [ ] Dependabot alerts list reviewed in the Security tab
+- [ ] "Prototype Pollution in minimist" alert opened
+- [ ] Dependabot security update PR created and merged
+- [ ] GitHub Actions grading workflow completed successfully
 
 ---
 
