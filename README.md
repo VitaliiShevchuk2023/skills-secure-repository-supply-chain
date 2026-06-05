@@ -518,6 +518,8 @@ https://github.com/skills/secure-repository-supply-chain
 2. Click **Advanced Security** in the left sidebar
 3. Verify that **Dependency Graph** is set to **Enabled**
 
+![](https://github.com/VitaliiShevchuk2023/skills-secure-repository-supply-chain/blob/main/images/github1.png)
+
 #### Activity 1.2 — Add a new dependency and view your dependency graph
 
 1. Navigate to the **Code** tab and open the `code/src/AttendeeSite` folder
