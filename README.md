@@ -1,13 +1,14 @@
 
 # 🔐 Secure Repository Supply Chain — GitHub Best Practices
 
-<img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
-
 > **Module:** Maintain a secure repository by using GitHub best practices  
 > **Platform:** GitHub / Microsoft Learn  
 > **Level:** Beginner → Intermediate
->
 
+> 📘 **Based on:** [Learn how Microsoft supports secure software development as part of a cybersecurity solution](https://learn.microsoft.com/en-us/training/paths/secure-software-development-for-cybersecurity/)  
+> This README is derived from the Microsoft Learn learning path above, which covers secure software development practices, GitHub repository security, and the Azure Well-Architected Framework Security pillar as part of a cybersecurity solution.
+
+---
 
 ## 📋 Table of Contents
 
@@ -16,6 +17,12 @@
   - [Security Tab Features](#security-tab-features)
   - [Key Security Tools](#key-security-tools)
   - [Automated Security](#automated-security)
+  - [Azure Well-Architected Framework — Security Pillar](#azure-well-architected-framework--security-pillar)
+    - [Principle 1: Plan Your Security Readiness](#principle-1-plan-your-security-readiness)
+    - [Principle 2: Design to Protect Confidentiality](#principle-2-design-to-protect-confidentiality)
+    - [Principle 3: Design to Protect Integrity](#principle-3-design-to-protect-integrity)
+    - [Principle 4: Design to Protect Availability](#principle-4-design-to-protect-availability)
+    - [Principle 5: Sustain and Evolve Your Security Posture](#principle-5-sustain-and-evolve-your-security-posture)
 - [Hands-on Practice](#️-hands-on-practice)
   - [Prerequisites](#prerequisites)
   - [Task 1: Dependency Graph](#task-1-dependency-graph)
@@ -191,6 +198,283 @@ When a secret is detected:
 3. A decision is made: revoke / issue a new secret / contact you directly
 
 > **Push Protection** is enabled by default on public repositories — blocks commits containing secrets before they are pushed.
+
+---
+
+## 🏛️ Azure Well-Architected Framework — Security Pillar
+
+A Well-Architected workload must be built with a **Zero Trust** approach and follow the **CIA Triad**: Confidentiality, Integrity, and Availability. Even small security problems can cause major damage to brand and reputation.
+
+**Key questions to assess your security strategy:**
+- Do your defenses make it hard and costly for attackers to compromise your system?
+- Are your security measures effective in limiting the impact of an incident?
+- Do you understand how valuable your system is to an attacker?
+- Can the workload quickly detect, respond to, and recover from disruptions?
+
+---
+
+### Principle 1: Plan Your Security Readiness
+
+> **Goal:** Make security a part of your design and operations with minimal hassle.
+
+#### Optimize Security Through Segmentation
+
+Use segmentation to plan security boundaries in the workload environment, processes, and team structure to isolate access and function.
+
+| Concept | Description |
+|---------|-------------|
+| **Need-to-know access** | Grant access only to roles that truly require it |
+| **Just-in-time (JIT)** | Provide temporary, time-limited access instead of standing permissions |
+| **Network isolation** | Separate components that handle personal data from those that don't |
+
+**Real-world example — Contoso Supermarket:**
+
+> A QA intern with broad security group membership had their account compromised in a social engineering attack. Because of over-provisioned access, the entire application platform deployment was compromised.
+>
+> **Outcome:** The team redesigned access controls to be need-to-know and JIT, isolated networks by data sensitivity, and contained the blast radius of future compromises.
+
+#### Respond to Incidents Efficiently
+
+Build a security incident response plan using industry frameworks that define the standard operating procedure for:
+
+```
+Preparedness → Detection → Containment → Mitigation → Post-incident review
+```
+
+#### Codify Secure Operations and Development Practices
+
+Set clear team-level security standards for your workload's life cycle:
+- How to write code securely
+- How to approve and release changes
+- How to handle and classify data
+- Which regulations apply to your data types
+
+**Knowledge check answers:**
+- Segmentation → isolates access based on **principle of least privilege**
+- Fast detection and response → requires a **security incident response plan**
+- Secure development practices → ensure code is developed in a **consistent, standard manner** ✅
+
+---
+
+### Principle 2: Design to Protect Confidentiality
+
+> **Goal:** Keep privacy, regulatory, application, and proprietary information safe by limiting access and hiding details when needed.
+
+#### Strictly Limit Access
+
+Apply the principle of least privilege:
+
+```
+❌ Standing access:  Full access to all customer data at all times
+✅ Just-in-time:     Approved, time-limited, logged access on demand
+```
+
+Use **Microsoft Entra ID + RBAC** to enforce:
+- Group-based access control
+- Approval workflows before granting access
+- Automatic access expiration
+- Full audit logging of data access
+
+**Real-world example — Contoso Rise Up (SaaS for nonprofits):**
+
+> A disgruntled support employee copied and publicly shared a donor list. Despite ethical access training, standing access made the breach possible.
+>
+> **Outcome:** RBAC implemented via Microsoft Entra ID. All data access now requires approval, is time-limited, and fully logged. No more standing access to customer data.
+
+#### Identify Confidential Data Through Classification
+
+Label data stores with metadata to indicate type and sensitivity:
+
+| Data Type | Example | Security Level |
+|-----------|---------|----------------|
+| Internal | Customer list | Medium |
+| Customer-owned | Donor lists | High |
+| Donor-specific | Mailing addresses | High |
+| Non-sensitive | Stock images, templates | Low |
+
+> Reorganize data so that security levels match data sensitivity. Apply **data masking** on key fields so even authorized users only see what they need.
+
+#### Apply Encryption at Every Step of the Data Life Cycle
+
+| State | Protection method |
+|-------|------------------|
+| **At rest** | Azure Storage Service Encryption |
+| **In transit** | HTTPS / TLS |
+| **Keys** | Azure Key Vault |
+
+**Real-world example:** A backup accidentally copied to a network share was discovered months later. With proper encryption at rest, the data would have been useless without the decryption key — eliminating the privacy breach risk.
+
+**Knowledge check answers:**
+- Access to confidential customer data → **customer service representative** (legitimate business need)
+- Data classification → **ongoing process**, not a one-time activity ❌
+- Encryption example → **Azure Storage Service Encryption** for storage accounts ✅
+
+---
+
+### Principle 3: Design to Protect Integrity
+
+> **Goal:** Make sure your system stays reliable and does what it's supposed to, without being tampered with or disrupted.
+
+#### Defend Your Supply Chain
+
+Protect your tools, libraries, and build systems from tampering:
+
+```
+Build pipeline security checklist:
+├── Scan dependencies for CVEs and malware
+├── Use anti-malware on build agents (e.g., Windows Defender Application Control)
+├── Sign firmware and verify signatures before execution
+└── Track software provenance throughout the lifecycle
+```
+
+**Real-world example — Contoso Paint Systems (IoT):**
+
+> Open-source tools in firmware and cloud systems were not scanned. Supply chain attacks could have compromised environmental air quality reporting.
+>
+> **Outcome:** Build processes updated to include CVE and malware scanning. IoT devices upgraded to support certificate-based communication and signed firmware verification.
+
+#### Employ Strong Cryptographic Mechanisms
+
+| Mechanism | Purpose |
+|-----------|---------|
+| **Encryption** | Protects data from being read if intercepted |
+| **Code signing** | Confirms software hasn't been tampered with |
+| **Certificates** | Authenticates device and service identity |
+| **Digital signatures** | Validates data integrity end-to-end |
+
+> Network segmentation alone is not sufficient — unencrypted communication between IoT devices and control systems is a critical risk even in isolated networks.
+
+#### Optimize the Security of Your Backups
+
+Make backups immutable using **Azure Blob Storage WORM (Write Once, Read Many)**:
+
+```
+Backup process with integrity protection:
+1. Encrypt the report/backup
+2. Store in Azure Blob Storage with WORM setting (immutable)
+3. Compute SHA hash of the file
+4. Compare hash on restore to verify nothing was altered
+```
+
+**Knowledge check answers:**
+- Threat scanning → **helps detect vulnerabilities** (not a guarantee) ✅
+- Cryptographic controls → **code signing and encryption** ✅
+- Immutable backup → **WORM feature in Azure Blob Storage** ✅
+
+---
+
+### Principle 4: Design to Protect Availability
+
+> **Goal:** Use strong security controls to help your system stay up and running, even during a security incident.
+
+#### Enhance Reliability Through Robust Security
+
+Use design patterns that minimize the **blast radius** of an attack:
+
+**Valet Key pattern:**
+```
+❌ Before: App servers handle all storage requests directly
+                → one malicious request can overwhelm all servers
+
+✅ After:  App servers issue scoped, time-limited access tokens
+                → malicious requests are contained and isolated
+```
+
+Additional controls:
+- Input validation and sanitization before data reaches the system
+- Rate limiting and request size caps
+- Separation of concerns between services
+
+**Real-world example — Contoso Concierge (hotel management):**
+
+> An attacker exploited a bug to serve an oversized fake folio object, exhausting server memory and cascading across all nodes in one region for 4+ hours.
+>
+> **Outcome:** Valet Key pattern adopted for storage access. Improved input filtering added. Attack surface and blast radius significantly reduced.
+
+#### Proactively Limit Attack Vectors
+
+| Control | What it prevents |
+|---------|-----------------|
+| **Anti-malware on VMs** | Malware installation and lateral movement |
+| **WAF (Web Application Firewall)** | SQL injection, XSS, and other web attacks |
+| **Regular patching** | Known CVE exploitation |
+| **Vulnerability scanning in CI/CD** | Insecure code reaching production |
+
+#### Secure Your Recovery Strategy
+
+> A recovery environment with relaxed security is itself an attack surface.
+
+Recovery security requirements:
+- ✅ Same network and identity protections as production
+- ✅ Immutable backup storage (tamper-proof)
+- ✅ WAF active during recovery (not only in steady state)
+- ✅ Backups scanned for malware before restoration
+- ✅ Regular drills to validate recovery procedures
+
+**Knowledge check answers:**
+- Contoso's response to overload attack → **design pattern minimizing blast radius** ✅
+- Preventative measure for attack vectors → **anti-malware solution** ✅
+- Recovery environment security → **must equal production** — False that it can be relaxed ✅
+
+---
+
+### Principle 5: Sustain and Evolve Your Security Posture
+
+> **Goal:** Hackers are always coming up with new methods — your security approach must keep up.
+
+#### Threat Modeling
+
+Use an industry-standard methodology (e.g., STRIDE) to systematically analyze your workload:
+
+```
+Threat modeling process:
+1. Map all components and data flows
+2. Identify potential threats at each point
+3. Classify threats by severity and likelihood
+4. Prioritize and schedule fixes
+5. Validate mitigations in the next cycle
+```
+
+**Real-world example — Contoso Rally (Apache Spark analytics):**
+
+> First threat modeling session revealed: insider threat risks in post-Spark data cleanup jobs, and an inactive race team's system still had access to sensitive data.
+>
+> **Outcome:** Fixes scheduled for next development cycle. Old system decommissioned.
+
+#### Test Controls Yourself
+
+| Test type | Frequency | Purpose |
+|-----------|-----------|---------|
+| **Vulnerability scanning** | Every deployment | Catch issues before production |
+| **Penetration testing** | Quarterly | Validate real-world attack resistance |
+| **White-box test** | Annually | Deep internal review with full system knowledge |
+| **Anti-malware on dev boxes** | Continuous | Prevent build agent compromise |
+
+#### Get Current and Stay Current
+
+Keep systems patched and tools updated — including components that "just work":
+
+```
+Common mistake:
+"The Apache Spark jobs work fine — no need to update Python/R packages."
+
+Risk:
+Stale packages → known CVEs → unpatched components in production
+
+Fix:
+Enforce update and patch schedules for ALL technology in use,
+including data processing frameworks and their dependencies.
+```
+
+Apply **Security Development Lifecycle (SDL)** reviews periodically to:
+- Verify security features are still functioning
+- Track asset inventory and their security posture
+- Audit provenance, usage, and known weaknesses
+
+**Knowledge check answers:**
+- Identifies gaps in security controls → **threat modeling** ✅
+- Security testing responsibility → **not the workload team alone** — requires independent experts ✅
+- Apache Spark job risk → **not included in the update and patching process** ✅
 
 ---
 
@@ -451,3 +735,7 @@ Secret scanning detects tokens, API keys, and passwords using known patterns. Fi
 ---
 
 *Module: Maintain a secure repository by using GitHub best practices | Microsoft Learn*
+
+---
+
+> 📘 **Learning path:** [Learn how Microsoft supports secure software development as part of a cybersecurity solution](https://learn.microsoft.com/en-us/training/paths/secure-software-development-for-cybersecurity/) — Microsoft Learn
