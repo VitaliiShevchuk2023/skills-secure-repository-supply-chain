@@ -558,6 +558,9 @@ Repository → Insights → Dependency graph → Dependencies
 - [ ] New dependency is visible in the dependency graph
 - [ ] GitHub Actions grading workflow completed successfully
 
+![](https://github.com/VitaliiShevchuk2023/skills-secure-repository-supply-chain/blob/main/images/github3.png)
+
+
 ---
 
 ### Task 2: Enable and View Dependabot Alerts
