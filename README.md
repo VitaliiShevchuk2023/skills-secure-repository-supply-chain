@@ -1,9 +1,6 @@
 
 # 🔐 Secure Repository Supply Chain — GitHub Best Practices
 
-> **Module:** Maintain a secure repository by using GitHub best practices  
-> **Platform:** GitHub / Microsoft Learn  
-> **Level:** Beginner → Intermediate
 
 > 📘 **Based on:** [Learn how Microsoft supports secure software development as part of a cybersecurity solution](https://learn.microsoft.com/en-us/training/paths/secure-software-development-for-cybersecurity/)  
 > This README is derived from the Microsoft Learn learning path above, which covers secure software development practices, GitHub repository security, and the Azure Well-Architected Framework Security pillar as part of a cybersecurity solution.
